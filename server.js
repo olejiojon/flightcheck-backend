@@ -156,29 +156,3 @@ function normalizeStatus(s) {
 }
 
 app.listen(PORT, () => console.log(`FLIGHT CHECK running on ${PORT}, key: ${RAPID_KEY ? 'SET' : 'NOT SET'}`));
-    res.json(data);
-  } catch (e) {
-    res.status(500).json({ error: e.message });
-  }
-});
-
-app.get('/age', async (req, res) => {
-  const { reg } = req.query;
-  if (!reg) return res.status(400).json({ error: 'reg required' });
-  try {
-    const url = `https://api.planespotters.net/pub/photos/reg/${encodeURIComponent(reg)}`;
-    const r = await fetch(url);
-    const data = await r.json();
-    const photo = data.photos?.[0];
-    res.json({
-      registration: reg,
-      year: photo?.aircraft?.year || null,
-      model: photo?.aircraft?.model || null,
-      photo_url: photo?.thumbnail?.src || null,
-    });
-  } catch (e) {
-    res.status(500).json({ error: e.message });
-  }
-});
-
-app.listen(PORT, () => console.log(`FLIGHT CHECK backend running on port ${PORT}, key: ${API_KEY ? 'SET' : 'NOT SET'}`));
